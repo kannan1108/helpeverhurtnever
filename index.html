@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Ever. Hurt Never.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Karla:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink: #1a1814;
+      --cream: #f5f0e8;
+      --warm: #c8a97a;
+      --muted: #8a8070;
+      --forest: #2d4a35;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Karla', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Karla', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 0.3s;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 12vw, 11rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      opacity: 0;
+      animation: fadeUp 1.4s ease forwards 0.6s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--warm);
+    }
+
+    .hero-rule {
+      width: 1px;
+      height: 80px;
+      background: var(--warm);
+      margin: 3.5rem auto;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 1s;
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 1.2s;
+    }
+
+    .hero-attribution {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-top: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.5s;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 2s;
+    }
+
+    .hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 50px;
+      background: var(--muted);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    /* ── MANIFESTO ── */
+    .manifesto {
+      padding: 8rem 2rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .manifesto-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-bottom: 3rem;
+    }
+
+    .manifesto p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      line-height: 1.75;
+      color: var(--cream);
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .manifesto p strong {
+      font-weight: 400;
+      color: var(--warm);
+    }
+
+    /* ── SPOKES ── */
+    .network {
+      padding: 6rem 2rem;
+      border-top: 1px solid rgba(200,169,122,0.15);
+    }
+
+    .network-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--warm);
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .network-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(200,169,122,0.12);
+    }
+
+    .network-item {
+      background: var(--ink);
+      padding: 2.5rem 2rem;
+      text-decoration: none;
+      display: block;
+      transition: background 0.3s ease;
+      position: relative;
+    }
+
+    .network-item:hover { background: #221f19; }
+
+    .network-item-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-bottom: 1rem;
+    }
+
+    .network-item-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+      font-weight: 300;
+    }
+
+    .network-item-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .network-item-arrow {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      color: var(--warm);
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .network-item:hover .network-item-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* ── EMAIL CAPTURE ── */
+    .join {
+      padding: 8rem 2rem;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .join-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-bottom: 2rem;
+    }
+
+    .join-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .join-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .join-form {
+      display: flex;
+      gap: 0;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .join-input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(200,169,122,0.35);
+      border-right: none;
+      color: var(--cream);
+      font-family: 'Karla', sans-serif;
+      font-size: 0.85rem;
+      padding: 1rem 1.2rem;
+      outline: none;
+      letter-spacing: 0.05em;
+      transition: border-color 0.3s ease;
+    }
+
+    .join-input::placeholder { color: var(--muted); }
+    .join-input:focus { border-color: var(--warm); }
+
+    .join-btn {
+      background: var(--warm);
+      color: var(--ink);
+      border: none;
+      font-family: 'Karla', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .join-btn:hover { background: #d4b88a; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(200,169,122,0.15);
+      padding: 3rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--warm);
+      font-style: italic;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover { color: var(--warm); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(1); transform-origin: top; }
+      50% { transform: scaleY(0.4); transform-origin: top; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .join-form { flex-direction: column; }
+      .join-input { border-right: 1px solid rgba(200,169,122,0.35); border-bottom: none; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">A teaching. A way of being.</div>
+    <h1 class="hero-title">
+      Help Ever.<br><em>Hurt Never.</em>
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">
+      Four words. An entire life philosophy.<br>
+      Not a slogan. Not a brand.<br>
+      A vow — renewed every day.
+    </p>
+    <p class="hero-attribution">— Sathya Sai Baba</p>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <div class="manifesto-label">The Teaching</div>
+    <p>
+      Somewhere along the way, we confused busyness with purpose.
+      We built systems that reward cruelty and call it efficiency.
+      We built diets that poison us and call them normal.
+      We built wars and called them necessary.
+    </p>
+    <p>
+      <strong>Help Ever. Hurt Never.</strong> is not a correction.<br>
+      It is a remembering.
+    </p>
+    <p>
+      You already know this. You have always known this.
+      The question is whether you are willing to live it —
+      in what you eat, what you wear, what you build,
+      what you say when no one is watching.
+    </p>
+    <p>
+      This is the work. This is the only work.
+    </p>
+  </section>
+
+  <!-- SINGLE SPOKE -->
+  <section style="text-align:center; padding: 2rem 2rem 6rem;">
+    <a href="https://peaceloka.com" style="font-family:'Karla',sans-serif; font-size:0.72rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--warm); text-decoration:none; border-bottom: 1px solid rgba(200,169,122,0.4); padding-bottom:3px; transition: all 0.3s ease;">
+      Wear the message → peaceloka.com
+    </a>
+  </section>
+
+  <!-- JOIN -->
+  <section class="join">
+    <div class="join-label">Join the Movement</div>
+    <h2 class="join-title">
+      Stay close.<br>
+      This is just beginning.
+    </h2>
+    <p class="join-sub">
+      No newsletters. No spam. Just signal —
+      when something worth knowing happens across the movement.
+    </p>
+    <div class="join-form">
+      <input type="email" class="join-input" placeholder="your@email.com">
+      <button class="join-btn">Join</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-mark">Help Ever. Hurt Never.</div>
+    <nav class="footer-links">
+      <a href="https://peaceloka.com">PeaceLoka</a>
+      <a href="https://peaceburgers.com">PeaceBurgers</a>
+      <a href="https://sathya.com">Sathya</a>
+      <a href="https://instagram.com/peaceloka">Instagram</a>
+    </nav>
+  </footer>
+
+</body>
+</html>
