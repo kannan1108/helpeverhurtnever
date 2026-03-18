@@ -422,9 +422,14 @@
       No newsletters. No spam. Just signal —
       when something worth knowing happens across the movement.
     </p>
-    <div class="join-form">
-      <input type="email" class="join-input" placeholder="your@email.com">
-      <button class="join-btn">Join</button>
+    <div id="join-form-wrap">
+      <div class="join-form">
+        <input type="email" class="join-input" placeholder="your@email.com">
+        <button class="join-btn" onclick="submitForm()">Join</button>
+      </div>
+    </div>
+    <div id="form-success" style="display:none; margin-top:1.5rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--warm); font-size:1.2rem;">You're in. Welcome to the movement.</p>
     </div>
   </section>
 
@@ -438,6 +443,24 @@
       <a href="https://instagram.com/peaceloka">Instagram</a>
     </nav>
   </footer>
+
+<script>
+async function submitForm() {
+  const email = document.querySelector('.join-input').value.trim();
+  if (!email) { alert('Please enter your email.'); return; }
+  const btn = document.querySelector('.join-btn');
+  btn.textContent = 'Joining...';
+  btn.disabled = true;
+  try {
+    const url = new URL('https://script.google.com/macros/s/AKfycbyyJ3T_XLkDHb5W0uBb_gGleDvBdQ5czlpdK_ykFPJxkKx7SRAtWlGa0FqWLpG7qCyhCA/exec');
+    url.searchParams.append('email', email);
+    url.searchParams.append('source', 'helpeverhurtnever.org');
+    await fetch(url.toString(), { method: 'GET', mode: 'no-cors' });
+  } catch(e) {}
+  document.getElementById('join-form-wrap').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+</script>
 
 </body>
 </html>
